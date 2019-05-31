@@ -1,0 +1,37 @@
+name = 'TetridAttack'
+luaDistVer = 'luajit'
+luaArgs = {'run.lua'}
+files = {
+	['.'] = {
+		'run.lua',
+		'cursor.png',
+		'diamond.png',
+		'heart.png',
+		'square.png',
+		'star.png',
+		'triangle.png',
+	},
+	['..'] = {
+		'ext',
+		'ffi',
+		'glapp',
+		'image',
+		'matrix',
+		'threadmanager',
+		'gl',
+	}
+}
+
+luajitLibs = {
+	win = {
+		'luajit',
+		'sdl2',	--'sdl',
+		'png',
+		--'z',
+		'regal',
+	},
+	osx = {
+		'sdl',
+		'libpng',
+	},
+}

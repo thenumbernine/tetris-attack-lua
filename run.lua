@@ -1,16 +1,13 @@
 #!/usr/bin/env luajit
 local gl = require 'gl'
 local sdl = require 'ffi.sdl'
-local GLApp = require 'glapp'
 local GLTex2D = require 'gl.tex2d'
 local glreport = require 'gl.report'
-local View = require 'glapp.view'
-local Orbit = require 'glapp.orbit'
 local ThreadManager = require 'threadmanager'
 local matrix = require 'matrix'
 require 'ext'
 
-local App = class(Orbit(View.apply(GLApp)))
+local App = require 'glapp.orbit'()
 App.title = 'Tetrid Attack'
 
 local quad = matrix{
@@ -51,8 +48,8 @@ function App:initGL()
 	end
 
 	self.view.ortho = true
-	self.view.pos[1] = self.size[1] / 2 + 1
-	self.view.pos[2] = self.size[2] / 2 + 1
+	self.view.pos.x = self.size[1] / 2 + 1
+	self.view.pos.y = self.size[2] / 2 + 1
 	self.view.orthoSize = self.size[2] / 2
 
 	self.pos = matrix{1,1}

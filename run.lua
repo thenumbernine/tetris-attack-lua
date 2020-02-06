@@ -7,7 +7,7 @@ local ThreadManager = require 'threadmanager'
 local matrix = require 'matrix'
 require 'ext'
 
-local App = require 'glapp.orbit'()
+local App = require 'ext.class'(require 'glapp.orbit'())
 App.title = 'Tetrid Attack'
 
 local quad = matrix{

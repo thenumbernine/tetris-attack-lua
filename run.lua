@@ -300,4 +300,4 @@ function App:checkDrop()
 	end)
 end
 
-App():run()
+return App():run()

@@ -19,11 +19,10 @@ local quad = matrix{
 
 local function tex2D(...)
 	local tex = GLTex2D(...) 
-	tex:setWrap{s=gl.GL_REPEAT, t=gl.GL_REPEAT}
-	tex:bind()
-	gl.glTexParameteri(tex.target, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
-	gl.glTexParameteri(tex.target, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
-	tex:unbind()
+		:setWrap{s=gl.GL_REPEAT, t=gl.GL_REPEAT}
+		:setParameter(gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
+		:setParameter(gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
+		:unbind()
 	return tex
 end
 

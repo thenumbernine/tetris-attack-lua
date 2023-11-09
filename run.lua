@@ -5,9 +5,9 @@ local GLTex2D = require 'gl.tex2d'
 local glreport = require 'gl.report'
 local ThreadManager = require 'threadmanager'
 local matrix = require 'matrix'
-require 'ext'
+local table = require 'ext.table'
 
-local App = require 'ext.class'(require 'glapp.orbit'())
+local App = require 'glapp.orbit'():subclass()
 App.title = 'Tetrid Attack'
 
 local quad = matrix{
@@ -66,6 +66,7 @@ App.numSwitchFrames = 3
 
 App.gameTime = 0
 App.nextRaiseTime = 0
+App.gameSpeed = 5		-- how long to raise a line
 
 function App:update()
 	App.super.update(self)
@@ -74,7 +75,7 @@ function App:update()
 	gl.glColor3f(1,1,1)
 	GLTex2D:enable()
 
-	local scrollOfs = self.gameTime - self.nextRaiseTime
+	local scrollOfs = (self.gameTime - self.nextRaiseTime) / self.gameSpeed
 
 	for i in self.board:iter() do
 		local b = self.board[i]
@@ -156,7 +157,7 @@ function App:update()
 			self.board[x][1] = math.random(#self.texs)
 		end
 		self.pos[2] = self.pos[2] + 1
-		self.nextRaiseTime = self.gameTime + 1
+		self.nextRaiseTime = self.gameTime + self.gameSpeed
 	end
 end
 

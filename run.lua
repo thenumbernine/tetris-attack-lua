@@ -18,7 +18,7 @@ local quad = matrix{
 }
 
 local function tex2D(...)
-	local tex = GLTex2D(...) 
+	local tex = GLTex2D(...)
 		:setWrap{s=gl.GL_REPEAT, t=gl.GL_REPEAT}
 		:setParameter(gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR)
 		:setParameter(gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR)
@@ -27,7 +27,7 @@ local function tex2D(...)
 end
 
 function App:initGL()
-	self.size = matrix{40,40}
+	self.size = matrix{6,12}
 
 	self.cursorTex = tex2D'cursor.png'
 
@@ -64,12 +64,17 @@ end
 App.switchFrame = 0
 App.numSwitchFrames = 3
 
+App.gameTime = 0
+App.nextRaiseTime = 0
+
 function App:update()
 	App.super.update(self)
 	gl.glClear(bit.bor(gl.GL_COLOR_BUFFER_BIT, gl.GL_DEPTH_BUFFER_BIT))
 
 	gl.glColor3f(1,1,1)
 	GLTex2D:enable()
+
+	local scrollOfs = self.gameTime - self.nextRaiseTime
 
 	for i in self.board:iter() do
 		local b = self.board[i]
@@ -79,21 +84,24 @@ function App:update()
 			gl.glBegin(gl.GL_QUADS)
 			for _,ofs in ipairs(quad) do
 				gl.glTexCoord2f(ofs[1], 1-ofs[2])
-				gl.glVertex2f((i+ofs):unpack())
+				gl.glVertex2f(i[1] + ofs[1], i[2] + ofs[2] + scrollOfs)
 			end
 			gl.glEnd()
 			t:unbind()
 		end
 	end
 
-	self.cursorTex:bind()	
+	self.cursorTex:bind()
 	gl.glBegin(gl.GL_QUADS)
 	for _,ofs in ipairs(quad) do
 		gl.glTexCoord2f(ofs[1], 1-ofs[2])
-		gl.glVertex2f((self.pos+ofs:emul(matrix{2,1})):unpack())
+		gl.glVertex2f(
+			self.pos[1] + ofs[1] * 2,
+			self.pos[2] + ofs[2] + scrollOfs
+		)
 	end
 	gl.glEnd()
-	
+
 	if self.switchFrame ~= 0 then
 		local f = self.switchFrame / self.numSwitchFrames
 		for side=0,1 do
@@ -113,12 +121,11 @@ function App:update()
 			end
 		end
 	end
-	
-	self.cursorTex:unbind()	
+
+	self.cursorTex:unbind()
 
 	GLTex2D:disable()
 
-	self.gameTime = self.gameTime or 0
 	local frameTime = 1/30
 	local thisTime = os.clock()
 	if not self.lastTime then
@@ -136,9 +143,7 @@ function App:update()
 		end
 	end
 
-	if not self.nextRaiseTime 
-	or self.gameTime >= self.nextRaiseTime 
-	then
+	if self.gameTime >= self.nextRaiseTime then
 		for y=self.size[2],1,-1 do
 			for x=1,self.size[1] do
 				if self.board[x][y] ~= 0 then
@@ -150,6 +155,7 @@ function App:update()
 		for x=1,self.size[1] do
 			self.board[x][1] = math.random(#self.texs)
 		end
+		self.pos[2] = self.pos[2] + 1
 		self.nextRaiseTime = self.gameTime + 1
 	end
 end
@@ -158,7 +164,7 @@ function App:checkInput()
 	if self.inputUp then
 		self.pos[2] = math.min(self.pos[2] + 1, self.size[2])
 	end
-	if self.inputDown then 
+	if self.inputDown then
 		self.pos[2] = math.max(self.pos[2] - 1, 1)
 	end
 	if self.inputLeft then
@@ -181,7 +187,7 @@ function App:checkInput()
 					= self.board[x+1][y], self.board[x][y]
 				self.switchPos = nil
 				self.switchFrame = 0
-				
+
 				self:checkDrop()
 				self:checkBoard()
 			end)
@@ -190,7 +196,7 @@ function App:checkInput()
 end
 
 function App:event(event)
-	if event.type == sdl.SDL_KEYDOWN 
+	if event.type == sdl.SDL_KEYDOWN
 	or event.type == sdl.SDL_KEYUP
 	then
 		local down = event.type == sdl.SDL_KEYDOWN
@@ -215,12 +221,12 @@ function App:checkBoard()
 	self.checkBoardThread = self.threads:add(function()
 		coroutine.yield()
 		local hit
-	
+
 		repeat
 			-- clear the flag.
 			-- someone else will set it if we get another request
 			self.doCheckBoard = nil
-			
+
 			for y=1,self.size[2] do
 				for x=1,self.size[1] do
 					local b = self.board[x][y]
@@ -251,11 +257,11 @@ function App:checkBoard()
 				end
 			end
 
-			if hit then 
+			if hit then
 				self:checkDrop()
 			end
 		until not self.doCheckBoard
-		
+
 		self.doCheckBoard = nil
 		self.checkBoardThread = nil
 	end)
@@ -288,7 +294,7 @@ function App:checkDrop()
 				end
 			end
 
-			if fall then 
+			if fall then
 				self:checkDrop()
 				self:checkBoard()
 			end

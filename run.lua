@@ -8,6 +8,7 @@ local matrix = require 'matrix'
 local table = require 'ext.table'
 
 local App = require 'glapp.orbit'():subclass()
+App.viewUseGLMatrixMode = true
 App.title = 'Tetrid Attack'
 
 local quad = matrix{

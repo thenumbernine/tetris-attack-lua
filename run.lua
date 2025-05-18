@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
+local sdl = require 'sdl'
 local gl = require 'gl'
-local sdl = require 'ffi.req' 'sdl'
 local GLTex2D = require 'gl.tex2d'
 local glreport = require 'gl.report'
 local ThreadManager = require 'threadmanager'

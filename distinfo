@@ -1,25 +1,22 @@
-name = 'TetridAttack'
-luaDistVer = 'luajit'
+name = "TetridAttack"
 luaArgs = {'run.lua'}
 files = {
-	['.'] = {
-		'run.lua',
-		'cursor.png',
-		'diamond.png',
-		'heart.png',
-		'square.png',
-		'star.png',
-		'triangle.png',
-	},
-	['..'] = {
-		'ext',
-		'ffi',
-		'glapp',
-		'image',
-		'matrix',
-		'threadmanager',
-		'gl',
-	}
+	["cursor.png"] = "tetrid-attack/cursor.png",
+	["diamond.png"] = "tetrid-attack/diamond.png",
+	["distinfo"] = "tetrid-attack/distinfo",
+	["heart.png"] = "tetrid-attack/heart.png",
+	["run.lua"] = "tetrid-attack/run.lua",
+	["square.png"] = "tetrid-attack/square.png",
+	["star.png"] = "tetrid-attack/star.png",
+	["triangle.png"] = "tetrid-attack/triangle.png",
+}
+deps = {
+	"ext",
+	"gl",
+	"glapp",
+	"matrix",
+	"sdl",
+	"threadmanager",
 }
 
 luajitLibs = {

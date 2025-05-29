@@ -198,19 +198,19 @@ function App:checkInput()
 end
 
 function App:event(event)
-	if event[0].type == sdl.SDL_KEYDOWN
-	or event[0].type == sdl.SDL_KEYUP
+	if event[0].type == sdl.SDL_EVENT_KEY_DOWN
+	or event[0].type == sdl.SDL_EVENT_KEY_UP
 	then
-		local down = event[0].type == sdl.SDL_KEYDOWN
-		if event[0].key.keysym.sym == sdl.SDLK_UP then
+		local down = event[0].type == sdl.SDL_EVENT_KEY_DOWN
+		if event[0].key.key == sdl.SDLK_UP then
 			self.inputUp = down
-		elseif event[0].key.keysym.sym == sdl.SDLK_DOWN then
+		elseif event[0].key.key == sdl.SDLK_DOWN then
 			self.inputDown = down
-		elseif event[0].key.keysym.sym == sdl.SDLK_LEFT then
+		elseif event[0].key.key == sdl.SDLK_LEFT then
 			self.inputLeft = down
-		elseif event[0].key.keysym.sym == sdl.SDLK_RIGHT then
+		elseif event[0].key.key == sdl.SDLK_RIGHT then
 			self.inputRight = down
-		elseif event[0].key.keysym.sym == sdl.SDLK_SPACE then
+		elseif event[0].key.key == sdl.SDLK_SPACE then
 			self.inputSpace = down
 		end
 	end

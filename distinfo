@@ -1,14 +1,18 @@
-name = "TetridAttack"
+--------------------------------------------
+-- generated with dist/build-distinfo.rua --
+--------------------------------------------
+
+name = "tetrid-attack"
 luaArgs = {'run.lua'}
 files = {
-	["cursor.png"] = "tetrid-attack/cursor.png",
-	["diamond.png"] = "tetrid-attack/diamond.png",
-	["distinfo"] = "tetrid-attack/distinfo",
-	["heart.png"] = "tetrid-attack/heart.png",
-	["run.lua"] = "tetrid-attack/run.lua",
-	["square.png"] = "tetrid-attack/square.png",
-	["star.png"] = "tetrid-attack/star.png",
-	["triangle.png"] = "tetrid-attack/triangle.png",
+	"cursor.png",
+	"diamond.png",
+	"distinfo",
+	"heart.png",
+	"run.lua",
+	"square.png",
+	"star.png",
+	"triangle.png",
 }
 deps = {
 	"ext",
@@ -17,18 +21,4 @@ deps = {
 	"matrix",
 	"sdl",
 	"threadmanager",
-}
-
-luajitLibs = {
-	win = {
-		'luajit',
-		'sdl2',	--'sdl',
-		'png',
-		--'z',
-		'regal',
-	},
-	osx = {
-		'sdl',
-		'libpng',
-	},
 }
